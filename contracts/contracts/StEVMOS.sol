@@ -42,7 +42,7 @@ import "@openzeppelin/contracts/utils/math/SafeMath.sol";
  * DAO. This is useful for emergency scenarios, e.g. a protocol bug, where one might want
  * to freeze all token transfers and approvals until the emergency is resolved.
  */
-abstract contract StETH is IERC20Metadata {
+abstract contract StEVMOS is IERC20Metadata {
     using SafeMath for uint256;
 
     /**
