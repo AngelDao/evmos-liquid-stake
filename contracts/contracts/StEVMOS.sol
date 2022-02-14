@@ -42,7 +42,7 @@ import "@openzeppelin/contracts/utils/math/SafeMath.sol";
  * DAO. This is useful for emergency scenarios, e.g. a protocol bug, where one might want
  * to freeze all token transfers and approvals until the emergency is resolved.
  */
-contract StETH is IERC20 {
+abstract contract StETH is IERC20 {
     using SafeMath for uint256;
 
     /**
@@ -78,7 +78,7 @@ contract StETH is IERC20 {
     /**
      * @return the name of the token.
      */
-    function name() public pure returns (string) {
+    function name() public pure returns (string memory) {
         return "Liquid Staked EVMOS";
     }
 
@@ -86,7 +86,7 @@ contract StETH is IERC20 {
      * @return the symbol of the token, usually a shorter version of the
      * name.
      */
-    function symbol() public pure returns (string) {
+    function symbol() public pure returns (string memory) {
         return "stEVMOS";
     }
 
@@ -290,7 +290,7 @@ contract StETH is IERC20 {
      * @dev This is used for calaulating tokens from shares and vice versa.
      * @dev This function is required to be implemented in a derived contract.
      */
-    function _getTotalPooledEther() internal view returns (uint256);
+    function _getTotalPooledEther() internal virtual view returns (uint256);
 
     /**
      * @notice Moves `_amount` tokens from `_sender` to `_recipient`.
