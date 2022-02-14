@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.0;
 
-import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 
 /**
@@ -42,7 +42,7 @@ import "@openzeppelin/contracts/utils/math/SafeMath.sol";
  * DAO. This is useful for emergency scenarios, e.g. a protocol bug, where one might want
  * to freeze all token transfers and approvals until the emergency is resolved.
  */
-abstract contract StETH is IERC20 {
+abstract contract StETH is IERC20Metadata {
     using SafeMath for uint256;
 
     /**
@@ -78,7 +78,7 @@ abstract contract StETH is IERC20 {
     /**
      * @return the name of the token.
      */
-    function name() public pure returns (string memory) {
+    function name() public pure override returns (string memory) {
         return "Liquid Staked EVMOS";
     }
 
@@ -86,14 +86,14 @@ abstract contract StETH is IERC20 {
      * @return the symbol of the token, usually a shorter version of the
      * name.
      */
-    function symbol() public pure returns (string memory) {
+    function symbol() public pure override returns (string memory) {
         return "stEVMOS";
     }
 
     /**
      * @return the number of decimals for getting user representation of a token amount.
      */
-    function decimals() public pure returns (uint8) {
+    function decimals() public pure override returns (uint8) {
         return 18;
     }
 
@@ -103,7 +103,7 @@ abstract contract StETH is IERC20 {
      * @dev Always equals to `_getTotalPooledEther()` since token amount
      * is pegged to the total amount of Ether controlled by the protocol.
      */
-    function totalSupply() public view returns (uint256) {
+    function totalSupply() public view override returns (uint256) {
         return _getTotalPooledEther();
     }
 
@@ -122,7 +122,7 @@ abstract contract StETH is IERC20 {
      * @dev Balances are dynamic and equal the `_account`'s share in the amount of the
      * total Ether controlled by the protocol. See `sharesOf`.
      */
-    function balanceOf(address _account) public view returns (uint256) {
+    function balanceOf(address _account) public view override returns (uint256) {
         return getPooledEthByShares(_sharesOf(_account));
     }
 
@@ -140,7 +140,7 @@ abstract contract StETH is IERC20 {
      *
      * @dev The `_amount` argument is the amount of tokens, not shares.
      */
-    function transfer(address _recipient, uint256 _amount) public returns (bool) {
+    function transfer(address _recipient, uint256 _amount) public override returns (bool) {
         _transfer(msg.sender, _recipient, _amount);
         return true;
     }
@@ -151,7 +151,7 @@ abstract contract StETH is IERC20 {
      *
      * @dev This value changes when `approve` or `transferFrom` is called.
      */
-    function allowance(address _owner, address _spender) public view returns (uint256) {
+    function allowance(address _owner, address _spender) public view override returns (uint256) {
         return allowances[_owner][_spender];
     }
 
@@ -168,7 +168,7 @@ abstract contract StETH is IERC20 {
      *
      * @dev The `_amount` argument is the amount of tokens, not shares.
      */
-    function approve(address _spender, uint256 _amount) public returns (bool) {
+    function approve(address _spender, uint256 _amount) public override returns (bool) {
         _approve(msg.sender, _spender, _amount);
         return true;
     }
@@ -192,7 +192,7 @@ abstract contract StETH is IERC20 {
      *
      * @dev The `_amount` argument is the amount of tokens, not shares.
      */
-    function transferFrom(address _sender, address _recipient, uint256 _amount) public returns (bool) {
+    function transferFrom(address _sender, address _recipient, uint256 _amount) public override returns (bool) {
         uint256 currentAllowance = allowances[_sender][msg.sender];
         require(currentAllowance >= _amount, "TRANSFER_AMOUNT_EXCEEDS_ALLOWANCE");
 
