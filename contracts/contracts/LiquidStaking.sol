@@ -23,18 +23,18 @@ contract LiquidStaking is StEVMOS, Ownable {
 
     function submit() external payable returns (uint256) {
         address sender = msg.sender;
-        uint256 deposit = msg.value;
+        uint256 depositVal = msg.value;
 
-        require(deposit > 0, "ZERO_DEPOSIT");
+        require(depositVal > 0, "ZERO_DEPOSIT");
 
-        uint256 sharesAmount = getSharesByPooledEth(deposit);
+        uint256 sharesAmount = getSharesByPooledEth(depositVal);
         // First deposit
         if (sharesAmount == 0) {
-            sharesAmount = deposit;
+            sharesAmount = depositVal;
         }
 
         _mintShares(sender, sharesAmount);
-        bufferedBalance += deposit;
+        bufferedBalance += depositVal;
         return sharesAmount;
     }
 
@@ -46,6 +46,18 @@ contract LiquidStaking is StEVMOS, Ownable {
         IDeposit(deposit).deposit{value: bufferedBalance}();
         transientBalance += bufferedBalance;
         bufferedBalance = 0;
+    }
+
+    /**
+    * To be called after staking with validator
+    */
+    function updateDepositState(uint256 _amount) external onlyOwner {
+        transientBalance -= _amount;
+        beaconBalance += _amount;
+    }
+
+    function compoundStaked(uint256 _amount) external onlyOwner {
+        beaconBalance += _amount;
     }
 
     function _getTotalPooledEther() internal view override returns (uint256) {
