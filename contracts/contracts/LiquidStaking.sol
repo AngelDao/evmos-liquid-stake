@@ -12,11 +12,11 @@ contract LiquidStaking is StEVMOS, Ownable {
     using SafeMath for uint256;
 
     // Balance on contract
-    uint256 bufferedBalance = 0;
+    uint256 public bufferedBalance = 0;
     // Balance on deposit contract
-    uint256 transientBalance = 0;
+    uint256 public transientBalance = 0;
     // Balance on validators
-    uint256 beaconBalance = 0;
+    uint256 public beaconBalance = 0;
 
     address private deposit;
 

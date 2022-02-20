@@ -8,7 +8,14 @@ async function main() {
   const LiquidStaking = await ethers.getContractFactory("LiquidStaking");
   const liquidStaking = await LiquidStaking.deploy();
 
-  console.log("Contract address:", liquidStaking.address);
+  console.log("Liquid Staking address:", liquidStaking.address);
+
+  const Deposit = await ethers.getContractFactory("Deposit");
+  const deposit = await Deposit.deploy();
+
+  console.log("Deposit address:", deposit.address);
+
+  await liquidStaking.setDeposit(deposit.address);
 }
 
 main()
